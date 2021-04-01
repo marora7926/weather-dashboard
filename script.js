@@ -11,3 +11,4 @@ function displayTime (){
 
 // updating seconds every second
 setInterval(displayTime, 1000);
+
