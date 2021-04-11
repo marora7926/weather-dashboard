@@ -8,9 +8,14 @@ function displayTime (){
     var liveDateTime = moment().format('MMMM Do YYYY, h:mm:ss a');
     timeDisplayEl.text(liveDay + ", " + liveDateTime + " AEDT");
 }
-
 // updating seconds every second
 setInterval(displayTime, 1000);
+
+// function for dispaly screen
+function displayScreen() {
+    var cityName = document.getElementById("#enter-city")
+    var searchButton = document.getElementById("#search-button")
+    var clearButton = document.getElementById("#")
 
 // DISPLAY TODAYS WEATHER
 
@@ -19,3 +24,5 @@ setInterval(displayTime, 1000);
 
 
 // LOCAL STORAGE AND SCREEN DISPLAY
+    
+}

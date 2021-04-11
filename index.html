@@ -41,24 +41,47 @@
                     <h5 class="mt-1">Search for a City:</h5>
                     <div class="input-group mb-3">
                         <!-- input field for the user -->
-                        <input id="enter-city" type="text" class="form-control" placeholder="Enter a city">
+                        <input id="enter-city" type="text" placeholder="Enter a city">
                         <!-- add a button to search with search logo -->
                         <button class="btn btn-primary" id="search-button">
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
                     <!-- add a button to clear the history -->
-                    <button class="btn btn-primary mb-3" type="button" id="clear-history">Clear history</button>
+                    <button class="btn btn-primary mb-3" id="clear-history">Clear history</button>
                     <form id="history"></form>
                 </div>
 
-                <!-- display weather -->
-                <div>
-                    <!-- today's weather -->
-                    <div></div>
-
+                <!-- display section -->
+                <div class="col-lg-9">
+                    <!-- current weather forecast -->
+                    <div class="row mr-0">
+                        <div class="col-lg-11 card m-3 d-none" id="today-weather">
+                            <div class="card-body">
+                                <h3 id="city-name" class="city-name align-middle">City Name</h3>
+                                <img id="live_icon" alt="">
+                                <p id="temp">Temperature</p>
+                                <p id="wind_speed">Wind Speed</p>
+                                <p id="humidity">Humidity</p>
+                                <p id="uv_index">UV _Index</p>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <!-- five-days forecast -->
-                    <div></div>                    
+                    <div class="row d-none" id="fiveday-header">
+                        <div class="col-12">
+                            <h3>5-days Forecast</h3>
+                        </div>
+                    </div>
+                    <!-- five cards -->
+                    <div class="row">
+                        <div class="col-md-2 bg-light text-dark">Day 1</div>
+                        <div class="col-md-2 bg-light text-dark">Day 2</div>
+                        <div class="col-md-2 bg-light text-dark">Day 3</div>
+                        <div class="col-md-2 bg-light text-dark">Day 4</div>
+                        <div class="col-md-2 bg-light text-dark">Day 5</div>
+                    </div>
                 </div>
             </div>
         </div>
