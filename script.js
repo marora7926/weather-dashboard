@@ -12,3 +12,10 @@ function displayTime (){
 // updating seconds every second
 setInterval(displayTime, 1000);
 
+// DISPLAY TODAYS WEATHER
+
+
+// FORECAST FIVE DAYS WEATHER
+
+
+// LOCAL STORAGE AND SCREEN DISPLAY

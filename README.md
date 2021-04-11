@@ -30,7 +30,7 @@ THEN I am again presented with current and future conditions for that city
 
 ## Screenshot
 
-![Screenshot](./assets/image/screenshot.png)
+![Screenshot](./assets/images/screenshot.png)
 
 - - -
 © 2021 Mohit Arora. Confidential and Proprietary. All Rights Reserved.

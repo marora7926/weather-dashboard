@@ -34,15 +34,33 @@
         </header>
         
         <!-- body MAIN section -->
-        <div class="container-fluid row">
-            
-            <!-- body FORM section -->
-            <div class="col-lg-3"></div>
-            
-            <!-- body DISPLAY section -->
-            <div class="col-lg-9">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- search for a city section -->
+                <div class="col-lg-3 bg-light">
+                    <h5 class="mt-1">Search for a City:</h5>
+                    <div class="input-group mb-3">
+                        <!-- input field for the user -->
+                        <input id="enter-city" type="text" class="form-control" placeholder="Enter a city">
+                        <!-- add a button to search with search logo -->
+                        <button class="btn btn-primary" id="search-button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <!-- add a button to clear the history -->
+                    <button class="btn btn-primary mb-3" type="button" id="clear-history">Clear history</button>
+                    <form id="history"></form>
+                </div>
+
+                <!-- display weather -->
+                <div>
+                    <!-- today's weather -->
+                    <div></div>
+
+                    <!-- five-days forecast -->
+                    <div></div>                    
+                </div>
             </div>
-        
         </div>
         
         <!-- body footer section -->
