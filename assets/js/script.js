@@ -18,6 +18,7 @@ function displayScreen() {
     var clearHistory = document.getElementById("clear-history")
     var history = document.getElementById("history");
     var cityName = document.getElementById("city-name")
+    var weatherDescription = document.getElementById("weather-description")
     var liveIcon = document.getElementById("live-icon");
     var temperature = document.getElementById("temp");
     var windSpeed = document.getElementById("wind-speed");
@@ -42,12 +43,14 @@ function displayScreen() {
                                 
                 // display city name, method: string interpolation
                 cityName.innerHTML = `${data.name} ${" (Today's weather)"}`
-                    
-                // display current situation iconx
+                 
+                // display weather description
+                weatherDescription.innerHTML = data.weather[0].description;
+
+                // display current situation icon
                 var weatherIcon = data.weather[0].icon;
                 liveIcon.setAttribute("src", "https://openweathermap.org/img/wn/" + weatherIcon + "@2x.png");
-                liveIcon.setAttribute("alt", data.weather[0].description);
-                    
+                                    
                 // display current temperature, method: string interpolation
                 temperature.innerHTML = `${"Temperature: "} ${Kelvin2Celsius(data.main.temp)} ${" &#176C"}`           
 
@@ -112,7 +115,7 @@ function displayScreen() {
             var historyEntry = document.createElement("input");
             historyEntry.setAttribute("type", "text");
             historyEntry.setAttribute("readonly", true);
-            historyEntry.setAttribute("class", "form-control d-block bg-white");
+            historyEntry.setAttribute("class", "form-control d-block bg-dark text-light");
             historyEntry.setAttribute("value", searchHistory[i]);
             historyEntry.addEventListener("click", function () {
                 getWeather(historyEntry.value);
