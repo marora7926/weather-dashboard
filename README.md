@@ -32,7 +32,11 @@ https://marora7926.github.io/weather-dashboard/
 
 ![Branching tree](./assets/images/branching-tree.png)
 
-## Screenshot
+## Landing Page
+
+![Screenshot](./assets/images/landing-page.png)
+
+## Working Website Screenshot
 
 ![Screenshot](./assets/images/screenshot.png)
 
