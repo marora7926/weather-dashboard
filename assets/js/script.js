@@ -32,7 +32,7 @@ function displayScreen() {
         var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityDisplayName + "&appid=" + apiKey;
         fetch(queryURL)
             .then(function (response) {
-            return response.json();
+                return response.json();
             })
             .then(function (data) {
                 console.log(data)
@@ -56,32 +56,29 @@ function displayScreen() {
 
                 // display current humidity, method: string interpolation
                 humidity.innerHTML =  `${"Humidity: "} ${data.main.humidity} ${"%"}`
-            
-            });
                 
-            // display current uv index
-            var UVQueryURL = "https://api.openweathermap.org/data/2.5/uvi/forecast?lat=" + data.coord.lat + "&lon=" + data.coord.lon + "&appid=" + ApiKey + "&cnt=1";
-            fetch(UVQueryURL)
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (data) {
-                    // When UV Index is good (<4): this will shows green box;
-                    // when UV index is OK (between 4 and 9, exlusive): it will show yellow box;
-                    // and when UV index is bad (more than 8): it will show in red box;
-                    if (data[0].value < 4 ) {
-                        uvIndex.setAttribute("class", "badge badge-success");
-                    }
-                    else if (data[0].value < 8) {
-                        uvIndex.setAttribute("class", "badge badge-warning");
-                    }
-                    else {
-                        uvIndex.setAttribute("class", "badge badge-danger");
-                    }
-                    uvIndex.innerHTML = `${"UV Index: "} ${data[0].value}`
-                });
-    }
+                // display current UV index, method: string interpolation
+                uvIndex.innerHTML =  `${"UV Index: "} ${data.current.uvi}`
+                currentUVIndex(data.current.uvi, uvIndex);
+            });
+        }
     
+        function currentUVIndex(index, uvIndex) {
+            // Updates the UV Index indicator
+            // When UV Index is good (<4): this will shows green box;
+            if (index < 4) {
+                uvIndex.setAttribute("class", "badge badge-success");
+            } 
+            // when UV index is OK (between 4 and 9, exlusive): it will show yellow box;
+            else if (index < 8) {
+                uvIndex.setAttribute("class", "badge badge-warning");
+            } 
+            // when UV index is bad (more than 8): it will show in red box;
+            else {
+                uvIndex.setAttribute("class", "badge badge-danger");
+            }
+        }
+        
     // converting kelvin (default) to celsius
     function Kelvin2Celsius(K) {
         return Math.floor(K - 273.15);
@@ -111,4 +108,5 @@ function displayScreen() {
         // Clear history
  
 }
+
 displayScreen();
