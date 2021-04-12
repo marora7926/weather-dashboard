@@ -20,7 +20,7 @@
         />
 
         <!-- local style sheet -->
-        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="./assets/css/style.css" />
 
         <title>weather-dashboard</title>
     </head>
@@ -56,77 +56,32 @@
                 <div class="col-lg-9">
                     <!-- current weather forecast -->
                     <div class="row mr-0">
-                        <div class="col-lg-11 card m-3" id="today-weather">
+                        <div class="col-lg-11 card m-3 d-none" id="today-weather">
                             <div class="card-body">
                                 <h3 id="city-name" class="city-name align-middle"></h3>
                                 <img id="live-icon" alt="">
-                                <p id="temp">Temperature:</p>
-                                <p id="wind-speed">Wind Speed:</p>
-                                <p id="humidity">Humidity:</p>
-                                <p id="uv-index">UV Index:</p>
+                                <p id="temp"></p>
+                                <p id="wind-speed"></p>
+                                <p id="humidity"></p>
+                                <p id="uv-index"></p>
                             </div>
                         </div>
                     </div>
                     
                     <!-- five-days forecast -->
-                    <div ID="five_day_forecast">
-                        <div class="row" id="fiveday-header">
-                            <div class="col-12">
-                                <h3>5-days Forecast</h3>
-                            </div>
+                    <div class="row d-none" id="fiveday-header">
+                        <div class="col-12">
+                            <h3>5-days Forecast</h3>
                         </div>
+                    </div>
                                                    
-                        <!-- five cards -->
-                        <div class="row">
-                            <div class="col-md-2 m-2">
-                                <div class="card-body">
-                                    <h3 id="next_day" class="align-middle"></h3>
-                                    <img id="live_icon" alt="">
-                                    <p id="temp">Temperature:</p>
-                                    <p id="wind_speed">Wind Speed:</p>
-                                    <p id="humidity">Humidity:</p>
-                                </div>   
-                            </div>
-
-                            <div class="col-md-2 m-2">
-                                <div class="card-body">
-                                    <h3 id="next_day" class="align-middle"></h3>
-                                    <img id="live_icon" alt="">
-                                    <p id="temp">Temperature:</p>
-                                    <p id="wind_speed">Wind Speed:</p>
-                                    <p id="humidity">Humidity:</p>
-                                </div>
-                            </div>
-
-                            <div class="col-md-2 m-2">
-                                <div class="card-body">
-                                    <h3 id="next_day" class="align-middle"></h3>
-                                    <img id="live_icon" alt="">
-                                    <p id="temp">Temperature:</p>
-                                    <p id="wind_speed">Wind Speed:</p>
-                                    <p id="humidity">Humidity:</p>
-                                </div>
-                            </div>
-
-                            <div class="col-md-2 m-2">
-                                <div class="card-body">
-                                    <h3 id="next_day" class="align-middle"></h3>
-                                    <img id="live_icon" alt="">
-                                    <p id="temp">Temperature:</p>
-                                    <p id="wind_speed">Wind Speed:</p>
-                                    <p id="humidity">Humidity:</p>
-                                </div>
-                            </div>
-                            <div class="col-md-2 m-2">
-                                <div class="card-body">
-                                    <h3 id="next_day" class="align-middle"></h3>
-                                    <img id="live_icon" alt="">
-                                    <p id="temp">Temperature:</p>
-                                    <p id="wind_speed">Wind Speed:</p>
-                                    <p id="humidity">Humidity:</p>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- five cards -->
+                    <div class="row">
+                        <div class="col-md-2 m-2"></div>
+                        <div class="col-md-2 m-2"></div>
+                        <div class="col-md-2 m-2"></div>
+                        <div class="col-md-2 m-2"></div>
+                        <div class="col-md-2 m-2"></div>
                     </div>
                 </div>
             </div>
@@ -144,7 +99,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
         <!-- local js file -->
-        <script src='./script.js'></script>'
+        <script src='./assets/js/script.js'></script>'
         
     </body>
 </html>
