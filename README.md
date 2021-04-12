@@ -24,6 +24,10 @@ WHEN I click on a city in the search history
 THEN I am again presented with current and future conditions for that city
 ```
 
+## Deployed URL
+
+https://marora7926.github.io/weather-dashboard/
+
 ## Branching tree
 
 ![Branching tree](./assets/images/branching-tree.png)
