@@ -31,50 +31,55 @@ function displayScreen() {
         // Execute a current weather get request from open weather api
         var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityDisplayName + "&appid=" + apiKey;
         fetch(queryURL)
-        .then(function (response) {
-
-            // removing no display to display
-            todayweather.classList.remove("d-none");
+            .then(function (response) {
+            return response.json();
+            })
+            .then(function (data) {
+                console.log(data)
+                
+                // removing no display to display
+                todayWeather.classList.remove("d-none");
                                 
-            // display city name, method: string interpolation
-            cityName.innerHTML = `${response.data.name} ${" (Today's weather)"}`
-                
-            // display current situation iconx
-            var weatherIcon = response.data.weather[0].icon;
-            liveIcon.setAttribute("src", "https://openweathermap.org/img/wn/" + weatherIcon + "@2x.png");
-            liveIcon.setAttribute("alt", response.data.weather[0].description);
-                
-            // display current temperature, method: string interpolation
-            temperature.innerHTML = `${"Temperature: "} ${Kelvin2Celsius(response.data.main.temp)} ${" &#176C"}`           
+                // display city name, method: string interpolation
+                cityName.innerHTML = `${data.name} ${" (Today's weather)"}`
+                    
+                // display current situation iconx
+                var weatherIcon = data.weather[0].icon;
+                liveIcon.setAttribute("src", "https://openweathermap.org/img/wn/" + weatherIcon + "@2x.png");
+                liveIcon.setAttribute("alt", data.weather[0].description);
+                    
+                // display current temperature, method: string interpolation
+                temperature.innerHTML = `${"Temperature: "} ${Kelvin2Celsius(data.main.temp)} ${" &#176C"}`           
 
-            // display current wind speed conditions, method: string interpolation
-            windSpeed.innerHTML = `${"Wind Speed: "} ${mS2KmH(response.data.wind.speed)} ${" Km/h"}`
+                // display current wind speed conditions, method: string interpolation
+                windSpeed.innerHTML = `${"Wind Speed: "} ${mS2KmH(data.wind.speed)} ${" Km/h"}`
 
-            // display current humidity, method: string interpolation
-            humidity.innerHTML =  `${"Humidity: "} ${response.data.main.humidity} ${"%"}`
+                // display current humidity, method: string interpolation
+                humidity.innerHTML =  `${"Humidity: "} ${data.main.humidity} ${"%"}`
             
+            });
                 
             // display current uv index
-            var lat = response.data.coord.lat;
-            var lon = response.data.coord.lon;
-            var UVQueryURL = "https://api.openweathermap.org/data/2.5/uvi/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + ApiKey + "&cnt=1";
+            var UVQueryURL = "https://api.openweathermap.org/data/2.5/uvi/forecast?lat=" + data.coord.lat + "&lon=" + data.coord.lon + "&appid=" + ApiKey + "&cnt=1";
             fetch(UVQueryURL)
                 .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
                     // When UV Index is good (<4): this will shows green box;
                     // when UV index is OK (between 4 and 9, exlusive): it will show yellow box;
                     // and when UV index is bad (more than 8): it will show in red box;
-                    if (response.data[0].value < 4 ) {
+                    if (data[0].value < 4 ) {
                         uvIndex.setAttribute("class", "badge badge-success");
                     }
-                    else if (response.data[0].value < 8) {
+                    else if (data[0].value < 8) {
                         uvIndex.setAttribute("class", "badge badge-warning");
                     }
                     else {
                         uvIndex.setAttribute("class", "badge badge-danger");
                     }
-                    uvIndex.innerHTML = `${"UV Index: "} ${response.data[0].value}`
-            });
-        });
+                    uvIndex.innerHTML = `${"UV Index: "} ${data[0].value}`
+                });
     }
     
     // converting kelvin (default) to celsius
