@@ -15,14 +15,28 @@ setInterval(displayTime, 1000);
 function displayScreen() {
     var cityName = document.getElementById("#enter-city")
     var searchButton = document.getElementById("#search-button")
-    var clearButton = document.getElementById("#")
-
-// DISPLAY TODAYS WEATHER
-
-
-// FORECAST FIVE DAYS WEATHER
-
-
-// LOCAL STORAGE AND SCREEN DISPLAY
+    var clearButton = document.getElementById("#clear-history")
     
+
+    // DISPLAY TODAYS WEATHER
+        // display city name
+        // display icon
+        // display temperature
+        // display wind speed
+        // display humidity
+        // display uv index
+
+    // FORECAST FIVE-DAYS WEATHER
+        // display date
+        // display icon
+        // display temperature
+        // display wind speed
+        // display humidity
+
+    // LOCAL STORAGE
+        // store data in local storage 
+        // Display Storage on screen
+        // display weather for city from history list 
+        // Clear history
+
 }
