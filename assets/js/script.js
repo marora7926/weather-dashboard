@@ -24,6 +24,7 @@ function displayScreen() {
     var humidity = document.getElementById("humidity");
     var uvIndex = document.getElementById("uv-index");
     var apiKey = "8f4926c0803cbcf21b36ee114402072b";
+    var todayWeather = document.getElementById("today-weather")
     var searchHistory = JSON.parse(localStorage.getItem("search")) || []
 
     function getWeather(cityDisplayName) {
@@ -31,23 +32,27 @@ function displayScreen() {
         var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityDisplayName + "&appid=" + apiKey;
         fetch(queryURL)
         .then(function (response) {
+
+            // removing no display to display
+            todayweather.classList.remove("d-none");
                                 
-            // display city name
-            cityName.innerHTML = response.data.name + " (Today's weather)";
+            // display city name, method: string interpolation
+            cityName.innerHTML = `${response.data.name} ${" (Today's weather)"}`
                 
-            // display current situation icon
+            // display current situation iconx
             var weatherIcon = response.data.weather[0].icon;
             liveIcon.setAttribute("src", "https://openweathermap.org/img/wn/" + weatherIcon + "@2x.png");
             liveIcon.setAttribute("alt", response.data.weather[0].description);
                 
-            // display current temperature
-            temperature.innerHTML = Kelvin2Celsius(response.data.main.temp) + " &#176C";           
+            // display current temperature, method: string interpolation
+            temperature.innerHTML = `${"Temperature: "} ${Kelvin2Celsius(response.data.main.temp)} ${" &#176C"}`           
 
-            // display current wind speed conditions
-            windSpeed.innerHTML = mS2KmH(response.data.wind.speed) + " km/h";
+            // display current wind speed conditions, method: string interpolation
+            windSpeed.innerHTML = `${"Wind Speed: "} ${mS2KmH(response.data.wind.speed)} ${" Km/h"}`
 
-            // display current humidity
-            humidity.innerHTML = response.data.main.humidity + "%";
+            // display current humidity, method: string interpolation
+            humidity.innerHTML =  `${"Humidity: "} ${response.data.main.humidity} ${"%"}`
+            
                 
             // display current uv index
             var lat = response.data.coord.lat;
@@ -67,7 +72,7 @@ function displayScreen() {
                     else {
                         uvIndex.setAttribute("class", "badge badge-danger");
                     }
-                    uvIndex.innerHTML = response.data[0].value;
+                    uvIndex.innerHTML = `${"UV Index: "} ${response.data[0].value}`
             });
         });
     }
@@ -82,6 +87,18 @@ function displayScreen() {
         return Math.floor(M * 3.6);
     }
             
+    // accessing the city name from search button
+    searchButton.addEventListener("click", function () {
+        var searchTerm = enterCity.value;
+        getWeather(searchTerm);
+        searchHistory.push(searchTerm);
+        localStorage.setItem("search", JSON.stringify(searchHistory));
+        renderSearchHistory();
+        })
+
+    function renderSearchHistory(){
+    }
+    
     // LOCAL STORAGE
         // store data in local storage 
         // Display Storage on screen
