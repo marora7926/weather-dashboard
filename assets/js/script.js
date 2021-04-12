@@ -30,98 +30,101 @@ function displayScreen() {
     var searchHistory = JSON.parse(localStorage.getItem("search")) || []
 
     function getWeather(cityDisplayName) {
-        // Execute a current weather get request from open weather api
+        // Execute a current weather get request from open weather api, Note ALTERNATE way of fetching
         var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityDisplayName + "&appid=" + apiKey;
-        fetch(queryURL)
+        axios.get(queryURL)
             .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                console.log(data)
-                
+                console.log(response)
+                                
                 // removing "no display" to "display"
                 todayWeather.classList.remove("d-none");
                                 
                 // display city name, method: string interpolation
-                cityName.innerHTML = `${data.name} ${" (Today's weather)"}`
+                cityName.innerHTML = `${response.data.name} ${" (Current weather)"}`
                  
                 // display weather description
-                weatherDescription.innerHTML = data.weather[0].description;
+                weatherDescription.innerHTML = response.data.weather[0].description;
 
                 // display current situation icon
-                var weatherIcon = data.weather[0].icon;
+                var weatherIcon = response.data.weather[0].icon;
                 liveIcon.setAttribute("src", "https://openweathermap.org/img/wn/" + weatherIcon + "@2x.png");
                                     
                 // display current temperature, method: string interpolation
-                temperature.innerHTML = `${"Temperature: "} ${Kelvin2Celsius(data.main.temp)} ${" &#176C"}`           
+                temperature.innerHTML = `${"Temperature: "} ${Kelvin2Celsius(response.data.main.temp)} ${" &#176C"}`           
 
                 // display current wind speed conditions, method: string interpolation
-                windSpeed.innerHTML = `${"Wind Speed: "} ${mS2KmH(data.wind.speed)} ${" Km/h"}`
+                windSpeed.innerHTML = `${"Wind Speed: "} ${mS2KmH(response.data.wind.speed)} ${" Km/h"}`
 
                 // display current humidity, method: string interpolation
-                humidity.innerHTML =  `${"Humidity: "} ${data.main.humidity} ${"%"}`
-                
-                // display current UV index, method: string interpolation
-                uvIndex.innerHTML =  `${"UV Index: "} ${data.current.uvi}`
-                currentUVIndex(data.current.uvi, uvIndex);
-            });
-
-            function currentUVIndex(index, uvIndex) {
-                // Updates the UV Index indicator
-                // When UV Index is good (<4): this will shows green box;
-                if (index < 4) {
-                    uvIndex.setAttribute("class", "badge badge-success");
-                } 
-                // when UV index is OK (between 4 and 9, exlusive): it will show yellow box;
-                else if (index < 8) {
-                    uvIndex.setAttribute("class", "badge badge-warning");
-                } 
-                // when UV index is bad (more than 8): it will show in red box;
-                else {
-                    uvIndex.setAttribute("class", "badge badge-danger");
-                }
-            }
-        
-            // Get 5 day forecast for this city
-            var forecastQueryURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + data.id + "&appid=" + APIKey;
-            fetch(forecastQueryURL)
+                humidity.innerHTML =  `${"Humidity: "} ${response.data.main.humidity} ${"%"}`
+            
+                // display current UV index
+                let lat = response.data.coord.lat;
+                let lon = response.data.coord.lon;
+                let UVQueryURL = "https://api.openweathermap.org/data/2.5/uvi/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
+                axios.get(UVQueryURL)
                 .then(function (response) {
-                return response.json();
-                })
-                .then(function (data) {
-                    fiveDayHeader.classList.remove("d-none");
+                                        
+                    let uvIndexVar = document.createElement("span");
                     
-                    //  Parse response to display forecast for next 5 days
-                    var forecast5Days = document.querySelectorAll(".forecast");
-                    for (i = 0; i < forecast5Days.length; i++) {
-                        forecast5Days[i].innerHTML = "";
-                        var forecastIndex = i * 8 + 4;
-                        var forecastDate = new Date(response.data.list[forecastIndex].dt * 1000);
-                        var forecastDay = forecastDate.getDate();
-                        var forecastMonth = forecastDate.getMonth() + 1;
-                        var forecastYear = forecastDate.getFullYear();
-                        var forecastDate = document.createElement("p");
-                        forecastDate.setAttribute("class", "mt-3 mb-0 forecast-date");
-                        forecastDate.innerHTML = forecastDay + "/" + forecastMonth + "/" + forecastYear;
-                        forecast5Days[i].append(forecastDate);
-
-                        // Icon for current weather
-                        var forecastWeather = document.createElement("img");
-                        forecastWeather.setAttribute("src", "https://openweathermap.org/img/wn/" + data.list[forecastIndex].weather[0].icon + "@2x.png");
-                        forecastWeather.setAttribute("alt", data.list[forecastIndex].weather[0].description);
-                        forecast5Days[i].append(forecastWeather);
-                        
-                        // forecast temperature
-                        var forecastTemp = document.createElement("p");
-                        forecastTemp.innerHTML = "Temp: " + Kelvin2Celsius(data.list[forecastIndex].main.temp) + " &#176C";
-                        forecast5Days[i].append(forecastTemp);
-                        
-                        // forecast humidity
-                        var forecastHumidity = document.createElement("p");
-                        forecastHumidity.innerHTML = "Humidity: " + data.list[forecastIndex].main.humidity + "%";
-                        forecast5Days[i].append(forecastHumidity);
+                    // Updates the UV Index indicator
+                    // When UV Index is good (<4): this will shows green box;
+                    if (response.data[0].value < 4 ) {
+                       uvIndexVar.setAttribute("class", "badge badge-success");
                     }
-                })
+                    // when UV index is OK (between 4 and 9, exlusive): it will show yellow box;
+                    else if (response.data[0].value < 8) {
+                        uvIndexVar.setAttribute("class", "badge badge-warning");
+                    } 
+                    // when UV index is bad (more than 8): it will show in red box;
+                    else {
+                        uvIndexVar.setAttribute("class", "badge badge-danger");
+                    }
+                    console.log(response.data[0].value)
+                    uvIndexVar.innerHTML = response.data[0].value;
+                    uvIndex.innerHTML = "UV Index: ";
+                    uvIndex.append(uvIndexVar);
+                });
+               
+                // Get 5 day forecast for this city; Note ALternate way for fetch from API\
+                var cityId = response.data.id;
+                var forecastQueryURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityId + "&appid=" + apiKey;
+                axios.get(forecastQueryURL)
+                    .then(function (response) {
+                        fiveDayHeader.classList.remove("d-none");
+                        console.log(response);
+                        //  Parse response to display forecast for next 5 days
+                        var forecast5Days = document.querySelectorAll(".forecast");
+                        for (i = 0; i < forecast5Days.length; i++) {
+                            forecast5Days[i].innerHTML = "";
+                            var forecastIndex = i * 8 + 4;
+                            var forecastDate = new Date(response.data.list[forecastIndex].dt * 1000);
+                            var forecastDay = forecastDate.getDate();
+                            var forecastMonth = forecastDate.getMonth() + 1;
+                            var forecastYear = forecastDate.getFullYear();
+                            var forecastDate = document.createElement("p");
+                            forecastDate.setAttribute("class", "mt-3 mb-0 forecast-date");
+                            forecastDate.innerHTML = forecastDay + "/" + forecastMonth + "/" + forecastYear;
+                            forecast5Days[i].append(forecastDate);
+
+                            // Icon for current weather
+                            var forecastWeather = document.createElement("img");
+                            forecastWeather.setAttribute("src", "https://openweathermap.org/img/wn/" + response.data.list[forecastIndex].weather[0].icon + "@2x.png");
+                            forecastWeather.setAttribute("alt", response.data.list[forecastIndex].weather[0].description);
+                            forecast5Days[i].append(forecastWeather);
+                                
+                            // forecast temperature
+                            var forecastTemp = document.createElement("p");
+                            forecastTemp.innerHTML = "Temp: " + Kelvin2Celsius(response.data.list[forecastIndex].main.temp) + " &#176C";
+                            forecast5Days[i].append(forecastTemp);
+                                
+                            // forecast humidity
+                            var forecastHumidity = document.createElement("p");
+                            forecastHumidity.innerHTML = "Humidity: " + response.data.list[forecastIndex].main.humidity + "%";
+                            forecast5Days[i].append(forecastHumidity);
+                        }
+                    });
+            });
     }
 
     // converting kelvin (default) to celsius
@@ -160,11 +163,16 @@ function displayScreen() {
             historyEntry.setAttribute("class", "form-control d-block bg-dark text-light");
             historyEntry.setAttribute("value", searchHistory[i]);
             historyEntry.addEventListener("click", function () {
-                getWeather(historyEntry.value);
+            getWeather(historyEntry.value);
             })
             history.append(historyEntry);
         }
-    } 
+    }
+    
+    renderSearchHistory();
+    if (searchHistory.length > 0) {
+        getWeather(searchHistory[searchHistory.length - 1]);
+    }
 }
 
 displayScreen();
