@@ -17,6 +17,11 @@ body {
     color: blue;
 }
 
+.col-md-2 {
+    background-color: #90eb6d;
+    font: black;
+    border-radius: 10px;
+}
 
 .footer-copyright{
     padding: 10px;
