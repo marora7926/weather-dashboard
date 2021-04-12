@@ -15,7 +15,7 @@ setInterval(displayTime, 1000);
 function displayScreen() {
     var enterCity = document.getElementById("enter-city")
     var searchButton = document.getElementById("search-button")
-    var clearButton = document.getElementById("clear-history")
+    var clearHistory = document.getElementById("clear-history")
     var history = document.getElementById("history");
     var cityName = document.getElementById("city-name")
     var liveIcon = document.getElementById("live-icon");
@@ -78,7 +78,7 @@ function displayScreen() {
                 uvIndex.setAttribute("class", "badge badge-danger");
             }
         }
-        
+
     // converting kelvin (default) to celsius
     function Kelvin2Celsius(K) {
         return Math.floor(K - 273.15);
@@ -97,16 +97,29 @@ function displayScreen() {
         localStorage.setItem("search", JSON.stringify(searchHistory));
         renderSearchHistory();
         })
-
-    function renderSearchHistory(){
-    }
     
-    // LOCAL STORAGE
-        // store data in local storage 
-        // Display Storage on screen
-        // display weather for city from history list 
-        // Clear history
- 
+    // Clear history
+    clearHistory.addEventListener("click", function () {
+        localStorage.clear();
+        searchHistory = [];
+        renderSearchHistory();
+    })
+
+    // defining the rederSearchHistory function
+    function renderSearchHistory() {
+        history.innerHTML = "";
+        for (let i = 0; i < searchHistory.length; i++) {
+            var historyEntry = document.createElement("input");
+            historyEntry.setAttribute("type", "text");
+            historyEntry.setAttribute("readonly", true);
+            historyEntry.setAttribute("class", "form-control d-block bg-white");
+            historyEntry.setAttribute("value", searchHistory[i]);
+            historyEntry.addEventListener("click", function () {
+                getWeather(historyEntry.value);
+            })
+            history.append(historyEntry);
+        }
+    } 
 }
 
 displayScreen();
