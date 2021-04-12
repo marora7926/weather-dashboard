@@ -26,6 +26,7 @@ function displayScreen() {
     var uvIndex = document.getElementById("uv-index");
     var apiKey = "8f4926c0803cbcf21b36ee114402072b";
     var todayWeather = document.getElementById("today-weather")
+    var fiveDayHeader = document.getElementById("fiveday-header");
     var searchHistory = JSON.parse(localStorage.getItem("search")) || []
 
     function getWeather(cityDisplayName) {
@@ -38,7 +39,7 @@ function displayScreen() {
             .then(function (data) {
                 console.log(data)
                 
-                // removing no display to display
+                // removing "no display" to "display"
                 todayWeather.classList.remove("d-none");
                                 
                 // display city name, method: string interpolation
@@ -64,23 +65,64 @@ function displayScreen() {
                 uvIndex.innerHTML =  `${"UV Index: "} ${data.current.uvi}`
                 currentUVIndex(data.current.uvi, uvIndex);
             });
-        }
-    
-        function currentUVIndex(index, uvIndex) {
-            // Updates the UV Index indicator
-            // When UV Index is good (<4): this will shows green box;
-            if (index < 4) {
-                uvIndex.setAttribute("class", "badge badge-success");
-            } 
-            // when UV index is OK (between 4 and 9, exlusive): it will show yellow box;
-            else if (index < 8) {
-                uvIndex.setAttribute("class", "badge badge-warning");
-            } 
-            // when UV index is bad (more than 8): it will show in red box;
-            else {
-                uvIndex.setAttribute("class", "badge badge-danger");
+
+            function currentUVIndex(index, uvIndex) {
+                // Updates the UV Index indicator
+                // When UV Index is good (<4): this will shows green box;
+                if (index < 4) {
+                    uvIndex.setAttribute("class", "badge badge-success");
+                } 
+                // when UV index is OK (between 4 and 9, exlusive): it will show yellow box;
+                else if (index < 8) {
+                    uvIndex.setAttribute("class", "badge badge-warning");
+                } 
+                // when UV index is bad (more than 8): it will show in red box;
+                else {
+                    uvIndex.setAttribute("class", "badge badge-danger");
+                }
             }
-        }
+        
+            // Get 5 day forecast for this city
+            var forecastQueryURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + data.id + "&appid=" + APIKey;
+            fetch(forecastQueryURL)
+                .then(function (response) {
+                return response.json();
+                })
+                .then(function (data) {
+                    fiveDayHeader.classList.remove("d-none");
+                    
+                    //  Parse response to display forecast for next 5 days
+                    var forecast5Days = document.querySelectorAll(".forecast");
+                    for (i = 0; i < forecast5Days.length; i++) {
+                        forecast5Days[i].innerHTML = "";
+                        var forecastIndex = i * 8 + 4;
+                        var forecastDate = new Date(response.data.list[forecastIndex].dt * 1000);
+                        var forecastDay = forecastDate.getDate();
+                        var forecastMonth = forecastDate.getMonth() + 1;
+                        var forecastYear = forecastDate.getFullYear();
+                        var forecastDate = document.createElement("p");
+                        forecastDate.setAttribute("class", "mt-3 mb-0 forecast-date");
+                        forecastDate.innerHTML = forecastDay + "/" + forecastMonth + "/" + forecastYear;
+                        forecast5Days[i].append(forecastDate);
+
+                        // Icon for current weather
+                        var forecastWeather = document.createElement("img");
+                        forecastWeather.setAttribute("src", "https://openweathermap.org/img/wn/" + data.list[forecastIndex].weather[0].icon + "@2x.png");
+                        forecastWeather.setAttribute("alt", data.list[forecastIndex].weather[0].description);
+                        forecast5Days[i].append(forecastWeather);
+                        
+                        // forecast temperature
+                        var forecastTemp = document.createElement("p");
+                        forecastTemp.innerHTML = "Temp: " + Kelvin2Celsius(data.list[forecastIndex].main.temp) + " &#176C";
+                        forecast5Days[i].append(forecastTemp);
+                        
+                        // forecast humidity
+                        var forecastHumidity = document.createElement("p");
+                        forecastHumidity.innerHTML = "Humidity: " + data.list[forecastIndex].main.humidity + "%";
+                        forecast5Days[i].append(forecastHumidity);
+                    }
+                })
+    }
 
     // converting kelvin (default) to celsius
     function Kelvin2Celsius(K) {
